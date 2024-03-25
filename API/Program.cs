@@ -18,7 +18,7 @@ app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("ht
 
 app.UseAuthentication();    // asking: do you have an authorised token? / valid ID?
 
-app.UseAuthorization();      // asking: do you have the right to access this resource? / enough age for the nightclub?
+app.UseAuthorization();     // asking: do you have the right to access this resource? / are you enough age to enter the nightclub?
 
 app.MapControllers();
 
