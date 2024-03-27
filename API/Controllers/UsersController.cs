@@ -1,11 +1,16 @@
-﻿using API.Interfaces;
+﻿using System.Security.Claims;
+using API.Data;
+using API.DTOs;
+using API.Entities;
+using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-[Authorize] // Requires authentication
+[Authorize]
 public class UsersController : BaseApiController
 {
     private readonly IUserRepository _userRepository;
@@ -17,7 +22,7 @@ public class UsersController : BaseApiController
         _userRepository = userRepository;
     }
 
-    [HttpGet]  // https://localhost:5001/api/users
+    [HttpGet]       // https://localhost:5001/api/users
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
     {
         var users = await _userRepository.GetMembersAsync();
@@ -25,9 +30,24 @@ public class UsersController : BaseApiController
         return Ok(users);
     }
 
-    [HttpGet("{username}")] // https://localhost:5001/api/users/username
+    [HttpGet("{username}")]     // https://localhost:5001/api/users/username
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
         return await _userRepository.GetMemberAsync(username);
+    }
+
+    [HttpPut]      // https://localhost:5001/api/users
+    public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
+    {
+        var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+
+        _mapper.Map(memberUpdateDto, user);
+
+        _userRepository.Update(user);
+
+        if (await _userRepository.SaveAllAsync()) return NoContent();
+
+        return BadRequest("Failed to update user");
     }
 }
