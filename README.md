@@ -6,3 +6,4 @@
 - Implemented Angular routing and Angular route guards to protect routes from unauthorized access.
 - Implemented global error handling in both the API and the Angular app side by API middleware and Angular Interceptor.
 - The database is initialised by seeding data, leveraging the repository pattern for data access, and utilising AutoMapper for mapping between data models and DTOs.
+- Created TypeScript components for the client user interface, including the member list, messages, and the home page.
