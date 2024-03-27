@@ -8,14 +8,17 @@ import { User } from './_models/user';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Dating app is running!';
-  constructor(private accountService: AccountService) { }
+  title = 'Dating app';
+  users: any;
+
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.setCurrentUser();
   }
 
   setCurrentUser() {
+    if (typeof window === 'undefined') return;   // Check if window is defined
     const userString = localStorage.getItem('user');
     if (!userString) return;
     const user: User = JSON.parse(userString);
