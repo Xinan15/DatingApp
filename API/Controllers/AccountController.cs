@@ -12,17 +12,15 @@ namespace API.Controllers;
 public class AccountController : BaseApiController
 {
     private readonly DataContext _context;
-
     private readonly ITokenService _tokenService;
 
     public AccountController(DataContext context, ITokenService tokenService)
     {
-        _tokenService = tokenService;
         _context = context;
+        _tokenService = tokenService;
     }
 
-    [HttpPost("register")]    // https://localhost:5001/api/account/register
-
+    [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
         if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
@@ -39,27 +37,36 @@ public class AccountController : BaseApiController
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return new UserDto{
+        return new UserDto
+        {
             Username = user.UserName,
             Token = _tokenService.CreateToken(user)
         };
     }
 
-    [HttpPost("login")]    // https://localhost:5001/api/account/login
+    [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+        var user = await _context.Users
+            .Include(p => p.Photos)
+            .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+
         if (user == null) return Unauthorized("Invalid username");
+
         using var hmac = new HMACSHA512(user.PasswordSalt);
-        var ComputeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-        
-        for (int i = 0; i < ComputeHash.Length; i++)
+
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+
+        for (int i = 0; i < computedHash.Length; i++)
         {
-            if (ComputeHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
+            if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
         }
-        return new UserDto{
+
+        return new UserDto
+        {
             Username = user.UserName,
-            Token = _tokenService.CreateToken(user)
+            Token = _tokenService.CreateToken(user),
+            PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
         };
     }
 
@@ -68,4 +75,3 @@ public class AccountController : BaseApiController
         return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
     }
 }
-
