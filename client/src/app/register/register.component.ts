@@ -7,10 +7,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
+
   constructor(private accountService: AccountService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -22,12 +22,14 @@ export class RegisterComponent implements OnInit {
         this.cancel();
       },
       error: error => {
-        this.toastr.error(error.error),
-        console.log(error)}
-    });
+        this.toastr.error(error.error);
+        console.log(error);
+      }
+    })
   }
 
   cancel() {
-    this.cancelRegister.emit(false);
+    this.cancelRegister.emit(false)
   }
+
 }

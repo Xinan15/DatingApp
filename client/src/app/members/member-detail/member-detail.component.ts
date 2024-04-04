@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { Member } from '../../_models/member';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
-import { MembersService } from '../../_services/members.service';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { Member } from 'src/app/_models/member';
+import { MembersService } from 'src/app/_services/members.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -29,7 +29,7 @@ export class MemberDetailComponent implements OnInit {
     this.memberService.getMember(username).subscribe({
       next: member => {
         this.member = member,
-          this.getImages()
+        this.getImages()
       }
     })
   }
@@ -37,7 +37,7 @@ export class MemberDetailComponent implements OnInit {
   getImages() {
     if (!this.member) return;
     for (const photo of this.member?.photos) {
-      this.images.push(new ImageItem({ src: photo.url, thumb: photo.url }));
+      this.images.push(new ImageItem({src: photo.url, thumb: photo.url}));
     }
   }
 

@@ -7,46 +7,42 @@ namespace API.Controllers;
 
 public class BuggyController : BaseApiController
 {
+private readonly DataContext _context;
+        public BuggyController(DataContext context)
+        {
+            _context = context;
+        }
 
-    private readonly DataContext _context;
-    public BuggyController(DataContext context)
-    {
-        _context = context;
-    }
+        [Authorize]
+        [HttpGet("auth")]
+        public ActionResult<string> GetSecret()
+        {
+            return "secret text";
+        }
 
-    [Authorize]
+        [HttpGet("not-found")]
+        public ActionResult<AppUser> GetNotFound()
+        {
+            var thing = _context.Users.Find(-1);
 
-    [HttpGet("auth")]
-    public ActionResult<string> GetSecret()
-    {
-        return "secret text";
-    }
+            if (thing == null) return NotFound();
 
-    [HttpGet("not-found")]
-    public ActionResult<AppUser> GetNotFound()
-    {
-        var thing = _context.Users.Find(-1);
+            return thing;
+        }
 
-        if (thing == null) return NotFound();
+        [HttpGet("server-error")]
+        public ActionResult<string> GetServerError()
+        {
+            var thing = _context.Users.Find(-1);
 
-        return thing;
-    }
+            var thingToReturn = thing.ToString();
 
-    [HttpGet("server-error")]
-    public ActionResult<string> GetServerError()
-    {
-        var thing = _context.Users.Find(-1);
+            return thingToReturn;
+        }
 
-        var thingToReturn = thing.ToString();
-
-        return thingToReturn;
-
-    }
-
-    [HttpGet("bad-request")]
-    public ActionResult<string> GetBadRequest()
-    {
-        return BadRequest("This was not a good request");
-    }
-
+        [HttpGet("bad-request")]
+        public ActionResult<string> GetBadRequest()
+        {
+            return BadRequest("This was not a good request");
+        }
 }

@@ -25,7 +25,7 @@ public class UsersController : BaseApiController
         _userRepository = userRepository;
     }
 
-    [HttpGet]   // localhost:5000/api/users
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
     {
         var users = await _userRepository.GetMembersAsync();
@@ -33,13 +33,13 @@ public class UsersController : BaseApiController
         return Ok(users);
     }
 
-    [HttpGet("{username}")]  // localhost:5000/api/users/username
+    [HttpGet("{username}")]
     public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
         return await _userRepository.GetMemberAsync(username);
     }
 
-    [HttpPut]  // localhost:5000/api/users
+    [HttpPut]
     public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
     {
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -53,7 +53,7 @@ public class UsersController : BaseApiController
         return BadRequest("Failed to update user");
     }
 
-    [HttpPost("add-photo")]  // localhost:5000/api/users/add-photo
+    [HttpPost("add-photo")]
     public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
     {
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -79,7 +79,7 @@ public class UsersController : BaseApiController
         return BadRequest("Problem adding photo");
     }
 
-    [HttpPut("set-main-photo/{photoId}")]  // localhost:5000/api/users/set-main-photo/photoId
+    [HttpPut("set-main-photo/{photoId}")]
     public async Task<ActionResult> SetMainPhoto(int photoId)
     {
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -99,7 +99,7 @@ public class UsersController : BaseApiController
         return BadRequest("Problem setting main photo");
     }
 
-    [HttpDelete("delete-photo/{photoId}")]  // localhost:5000/api/users/delete-photo/photoId
+    [HttpDelete("delete-photo/{photoId}")]
     public async Task<ActionResult> DeletePhoto(int photoId)
     {
         var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());

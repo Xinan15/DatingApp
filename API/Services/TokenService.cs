@@ -5,21 +5,23 @@ using API.Entities;
 using API.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API;
+namespace API.Services;
 
 public class TokenService : ITokenService
 {
     private readonly SymmetricSecurityKey _key;
+
     public TokenService(IConfiguration config)
     {
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
     }
-    public string CreateToken(AppUser user)     // Token logic
+
+    public string CreateToken(AppUser user)
     {
         var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
-        };
+            {
+                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+            };
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -34,6 +36,6 @@ public class TokenService : ITokenService
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        return tokenHandler.WriteToken(token);  
+        return tokenHandler.WriteToken(token);
     }
 }

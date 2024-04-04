@@ -18,10 +18,11 @@ export class AppComponent implements OnInit {
   }
 
   setCurrentUser() {
-    if (typeof window === 'undefined') return;   // Check if window is defined
     const userString = localStorage.getItem('user');
     if (!userString) return;
     const user: User = JSON.parse(userString);
     this.accountService.setCurrentUser(user);
   }
+
+
 }

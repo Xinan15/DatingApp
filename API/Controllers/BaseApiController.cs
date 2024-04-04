@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class BaseApiController :ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")] // https://localhost:5001/api/users
-    public class BaseApiController : ControllerBase
-    {
-    }
-};
+
+}
