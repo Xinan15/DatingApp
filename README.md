@@ -1,5 +1,5 @@
 ### Dating Web Application
-**Tech Stack**: ASP.NET Core, C#, DotNet CLI, Angular, TypeScript, Heroku, SignalR, IQueryable, Bootstrap.
+**Tech Stack**: ASP.NET Core, C#, DotNet CLI, Angular, TypeScript, Heroku, Docker, SignalR, IQueryable, Bootstrap.
 
 **Features**: 
 - A full-stack dating web application built with ASP.NET Core WebAPI and Angular.
