@@ -25,14 +25,19 @@ app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod()
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
+app.MapFallbackToController("Index", "Fallback");
 
 using var scope = app.Services.CreateScope();
-var services  = scope.ServiceProvider;
+var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<DataContext>();
     await context.Database.MigrateAsync();
+    await Seed.ClearConnections(context);
     await Seed.SeedUsers(context);
 }
 catch (Exception ex)
