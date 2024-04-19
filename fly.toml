@@ -1,0 +1,28 @@
+# fly.toml app configuration file generated for xa-datingapp on 2024-04-19T14:33:42+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'xa-datingapp'
+primary_region = 'lhr'
+
+[build]
+  image = 'xinan15/datingapp:latest'
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  CloudinarySettings__CloudName="da8txuwa1"
+  CloudinarySettings__ApiKey="877683866443237"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
