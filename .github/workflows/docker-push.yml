@@ -20,6 +20,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "{{defualtContext}}:API"
+          context: "{{defaultContext}}:API"
           push: true
           tags: xinan15/datingapp:latest
