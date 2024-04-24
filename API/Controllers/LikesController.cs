@@ -1,4 +1,4 @@
-using API.Controllers;
+﻿using API.Controllers;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -49,13 +49,13 @@ public class LikesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery] LikesParams likesParams)
+    public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParams)
     {
         likesParams.UserId = User.GetUserId();
 
         var users = await _likesRepository.GetUserLikes(likesParams);
 
-        Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,
+        Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, 
             users.TotalCount, users.TotalPages));
 
         return Ok(users);
