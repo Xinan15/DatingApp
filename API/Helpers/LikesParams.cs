@@ -1,4 +1,4 @@
-namespace API.Helpers;
+﻿namespace API.Helpers;
 
 public class LikesParams : PaginationParams
 {
