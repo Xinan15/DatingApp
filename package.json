@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@babel/traverse": "~7.23.2",
+    "critters": "^0.0.24",
+    "express": "~4.19.2",
+    "follow-redirects": "~1.15.4",
+    "ip": "~2.0.1",
+    "postcss": "~8.4.31",
+    "vite": "~4.5.2",
+    "webpack-dev-middleware": "~6.1.2",
+    "ws": "~8.17.1"
+  }
+}
